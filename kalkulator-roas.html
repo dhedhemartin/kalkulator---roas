@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Kalkulator Target ROAS Seller</title>
+<style>
+body {
+  font-family: Arial;
+  max-width: 420px;
+  margin: auto;
+  padding: 20px;
+}
+input {
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0;
+}
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+}
+.hasil {
+  margin-top: 15px;
+  font-weight: bold;
+}
+.aman { color: green; }
+.tips { color: orange; }
+.bahaya { color: red; }
+</style>
+</head>
+
+<body>
+
+<h2>Kalkulator Target ROAS</h2>
+
+<label>Harga Jual</label>
+<input type="number" id="jual">
+
+<label>HPP</label>
+<input type="number" id="hpp">
+
+<label>Potongan Voucher</label>
+<input type="number" id="voucher">
+
+<label>Biaya Admin</label>
+<input type="number" id="admin">
+
+<label>Target Profit</label>
+<input type="number" id="profit">
+
+<button onclick="hitung()">HITUNG</button>
+
+<div class="hasil" id="hasil"></div>
+
+<script>
+function hitung() {
+  let jual = Number(jualInput.value = document.getElementById("jual").value);
+  let hpp = Number(document.getElementById("hpp").value);
+  let voucher = Number(document.getElementById("voucher").value);
+  let admin = Number(document.getElementById("admin").value);
+  let profit = Number(document.getElementById("profit").value);
+
+  let sisa = jual - hpp - voucher - admin;
+
+  if (sisa <= profit) {
+    document.getElementById("hasil").innerHTML =
+      "<span class='bahaya'>❌ Produk tidak layak diiklankan</span>";
+    return;
+  }
+
+  let iklanMax = sisa - profit;
+  let roas = jual / iklanMax;
+  let acos = (iklanMax / jual) * 100;
+
+  let status = "";
+  let kelas = "";
+
+  if (roas >= 10) {
+    status = "AMAN (Bisa Scale)";
+    kelas = "aman";
+  } else if (roas >= 5) {
+    status = "TIPIS (Hati-hati)";
+    kelas = "tips";
+  } else {
+    status = "BAHAYA (Jangan Iklan)";
+    kelas = "bahaya";
+  }
+
+  document.getElementById("hasil").innerHTML = `
+    Biaya Iklan Maks: Rp ${iklanMax.toLocaleString()}<br>
+    Target ROAS: ${roas.toFixed(2)}<br>
+    Target ACOS: ${acos.toFixed(2)}%<br>
+    <span class="${kelas}">${status}</span>
+  `;
+}
+</script>
+
+</body>
+</html>
